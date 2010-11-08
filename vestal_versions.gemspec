@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "1.2.2"
+  s.version = "1.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
-  s.date = %q{2010-10-31}
+  s.date = %q{2010-11-08}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = [
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "init.rb",
      "lib/vestal_versions.rb",
      "lib/vestal_versions/changes.rb",
+     "lib/vestal_versions/comments.rb",
      "lib/vestal_versions/conditions.rb",
      "lib/vestal_versions/configuration.rb",
      "lib/vestal_versions/control.rb",
@@ -45,6 +46,7 @@ Gem::Specification.new do |s|
      "lib/vestal_versions/versioned.rb",
      "lib/vestal_versions/versions.rb",
      "test/changes_test.rb",
+     "test/comments_test.rb",
      "test/conditions_test.rb",
      "test/configuration_test.rb",
      "test/control_test.rb",
@@ -70,6 +72,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.test_files = [
     "test/changes_test.rb",
+     "test/comments_test.rb",
      "test/conditions_test.rb",
      "test/configuration_test.rb",
      "test/control_test.rb",

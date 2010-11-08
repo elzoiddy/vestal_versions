@@ -87,6 +87,7 @@ module VestalVersions
       include Changes
       include Creation
       include Users
+      include Comments
       include Reversion
       include Reset
       include Conditions

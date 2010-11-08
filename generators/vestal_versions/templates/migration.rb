@@ -4,6 +4,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.belongs_to :versioned, :polymorphic => true
       t.belongs_to :user, :polymorphic => true
       t.string :user_name
+      t.string :reason_for_update
       t.text :modifications
       t.integer :number
       t.integer :reverted_from
