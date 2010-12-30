@@ -1,6 +1,6 @@
 ActiveRecord::Base.establish_connection(
-  :adapter => defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby' ? 'jdbcsqlite3' : 'sqlite3',
-  :database => File.join(File.dirname(__FILE__), 'test.db')
+  :adapter  => 'sqlite3',
+  :database => File.expand_path('../../test.db', __FILE__)
 )
 
 class CreateSchema < ActiveRecord::Migration
@@ -23,29 +23,4 @@ class CreateSchema < ActiveRecord::Migration
       t.timestamps
     end
   end
-end
-
-CreateSchema.suppress_messages do
-  CreateSchema.migrate(:up)
-end
-
-class User < ActiveRecord::Base
-  versioned
-
-  def name
-    [first_name, last_name].compact.join(' ')
-  end
-
-  def name=(names)
-    self[:first_name], self[:last_name] = names.split(' ', 2)
-  end
-end
-
-class DeletedUser < ActiveRecord::Base
-  set_table_name 'users'
-  versioned :dependent => :tracking
-
-end
-
-class MyCustomVersion < VestalVersions::Version
 end
