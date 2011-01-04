@@ -8,7 +8,7 @@ module VestalVersions
     include ActiveSupport::Configurable
 
     def self.number_column_name
-      column_name = VestalVersions.config.number_colum_name
+      column_name = VestalVersions.config.number_column_name
       column_name.blank? ? "number" : column_name
     end
 

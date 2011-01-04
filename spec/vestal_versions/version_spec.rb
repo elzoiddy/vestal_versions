@@ -63,14 +63,14 @@ describe VestalVersions::Versions do
   end
 
   it "should use configured colum name as the version number column" do
-    VestalVersions::Version.config.number_colum_name = "elnumero"
+    VestalVersions::Version.config.number_column_name = "elnumero"
     VestalVersions::Version.number_column_name.should == 'elnumero'
   end
 
   it "should store version number in alternate column name if configured" do
     User.delete_all
     VestalVersions::Version.delete_all
-    VestalVersions::Version.config.number_colum_name = "elnumero"
+    VestalVersions::Version.config.number_column_name = "elnumero"
     user = User.create(:name => 'Stephen Richert')
     user.versions.should be_empty
         
