@@ -57,5 +57,36 @@ describe VestalVersions::Versions do
     user.revert_to!(version)
     user.versions.last.original_number.should == 2
   end
+
+  it "should default to 'number' as the version number column" do
+    VestalVersions::Version.number_column_name.should == 'number'
+  end
+
+  it "should use configured colum name as the version number column" do
+    VestalVersions::Version.config.number_colum_name = "elnumero"
+    VestalVersions::Version.number_column_name.should == 'elnumero'
+  end
+
+  it "should store version number in alternate column name if configured" do
+    User.delete_all
+    VestalVersions::Version.delete_all
+    VestalVersions::Version.config.number_colum_name = "elnumero"
+    user = User.create(:name => 'Stephen Richert')
+    user.versions.should be_empty
+        
+    user.update_attribute(:name, 'Steve Jobs')
+    user.versions.size.should == 1
+    user.versions.last.number.should == 2
+    user.versions.last[:elnumero].should == 2
+    user.versions.last[:number].should be_nil
+        
+    user.update_attribute(:name, 'Steven Forbes')
+    user.versions.size.should == 2
+    user.versions.last.number.should == 3
+    user.versions.last[:elnumero].should == 3
+    user.versions.last[:number].should be_nil
+  
+    
+  end
   
 end

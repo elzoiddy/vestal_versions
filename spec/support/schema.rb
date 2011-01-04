@@ -18,6 +18,7 @@ class CreateSchema < ActiveRecord::Migration
       t.string :reason_for_update
       t.text :modifications
       t.integer :number
+      t.integer :elnumero
       t.integer :reverted_from
       t.string :tag
       t.timestamps

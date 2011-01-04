@@ -46,5 +46,4 @@ describe VestalVersions::Comments do
     user.versions.last.reason_for_update.should be_nil
   end
 
-  
 end

@@ -6,6 +6,8 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.string :user_name
       t.string :reason_for_update
       t.text :modifications
+      # note: number is reserved word in oracle, so use the global option
+      # VestalVersions::Version.config.number_colum_name to set alternate column name
       t.integer :number
       t.integer :reverted_from
       t.string  :tag
@@ -17,6 +19,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.index [:versioned_id, :versioned_type]
       t.index [:user_id, :user_type]
       t.index :user_name
+      # see note above about number being a reserved word in oracle
       t.index :number
       t.index :tag
       t.index :created_at

@@ -63,7 +63,7 @@ module VestalVersions
         #
         # If no associated versions exist, the object is considered at version 1.
         def last_version
-          @last_version ||= versions.maximum(:number) || 1
+          @last_version ||= versions.maximum(VestalVersions::Version.number_column_name.to_sym) || 1
         end
 
         # Clears the cached version number instance variables so that they can be recalculated.
