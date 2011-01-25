@@ -7,7 +7,12 @@ HEAD
 
   :none will not record a reason for update even it's given.  
   :optional will record your reason for update if one is provided
-  :required requires you to provide a reason for updating or an exception will be thrown.
+  :required requires you to provide a reason for updating or record will be valid
+    and an exception will be thrown if you skip validation.
+
+  Note: this validation for reason_for_update to be present is skipped when
+  we create a new version and the initial_version flag is turned off. 
+
 * Added a new class level 'skip_version' that works on one model at
 a time
 * Internal refactoring and tidying up by Alex Crichton

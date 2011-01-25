@@ -22,11 +22,14 @@ describe VestalVersions::Comments do
   
   it "should require a reason for update when configured" do
     User.prepare_versioned_options(:update_comments => :required)
-    lambda {user.update_attributes(:first_name => 'Stephen')}.should raise_error
 
-    user.update_attributes(:first_name => 'Stephen', 
+    user.update_attributes(:first_name => 'Stephenie')
+    user.should_not be_valid
+    user.errors.should_not be_empty
+    
+    user.update_attributes(:first_name => 'Step', 
       :reason_for_update => "some reason")
-
+    
     user.versions.last.reason_for_update.should == "some reason"
   end
 
@@ -44,6 +47,66 @@ describe VestalVersions::Comments do
       :reason_for_update => "some reason")
 
     user.versions.last.reason_for_update.should be_nil
+  end
+
+  it "should not validate reason for update on create without initial version turned on" do
+    User.prepare_versioned_options(:update_comments => :required)
+    someuser = User.create!(:name => "see boo")
+    someuser.versions.size.should == 0
+
+    someuser = User.create!(:name => "saw boo", :reason_for_update => "Ignored reason")
+    someuser.versions.size.should == 0
+  end
+
+  it "should validate reason for update on create when initial version is true" do
+    User.prepare_versioned_options(:initial_version => true, :update_comments => :required)
+    someuser = User.new(:name => "boo hoo")
+    someuser.should_not be_valid
+
+    someuser = User.new(:name => "boo hoo", :reason_for_update => "some reason")
+    someuser.should be_valid
+    someuser.save!
+    someuser.versions.size.should == 1
+    someuser.versions.last.reason_for_update.should == "some reason"
+  end
+  
+
+  it "should always validate reason for update on when updating old records" do
+    User.prepare_versioned_options(:initial_version => true, :update_comments => :required)
+    someuser = User.create!(:name => "boo hoo", :reason_for_update => "some reason")
+
+    someuser.update_attributes(:name => "see more", :reason_for_update => nil)
+    someuser.should_not be_valid
+
+    someuser.update_attributes(:name => "see more", :reason_for_update => "")
+    someuser.should_not be_valid
+
+    someuser.update_attributes(:name => "see more", :reason_for_update => "finally a reason")
+    someuser.should be_valid
+
+    User.prepare_versioned_options(:initial_version => false, :update_comments => :required)
+    someuser = User.create!(:name => "boo hoo boo")
+
+    someuser.update_attributes(:name => "see more more")
+    someuser.should_not be_valid
+
+    someuser.update_attributes(:name => "see more more", :reason_for_update => nil)
+    someuser.should_not be_valid
+
+    someuser.update_attributes(:name => "see more more", :reason_for_update => "")
+    someuser.should_not be_valid
+
+    someuser.update_attributes(:name => "see more", :reason_for_update => "finally a reason")
+    someuser.should be_valid
+
+  end
+
+  it "should still blow up when reason for udpate is required and validations are skipped " do
+    User.prepare_versioned_options(:update_comments => :required)
+
+    user.first_name = 'Stephenie'
+    lambda {user.save(:validate => false)}.should raise_error
+    
   end
 
 end

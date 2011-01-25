@@ -10,6 +10,16 @@ module VestalVersions
 
     included do
       attr_accessor :reason_for_update
+      
+      # if update_comments is required, make sure we have one 
+      # for updating old records and  when creating new records 
+      # with initial version is turned on
+
+      validates :reason_for_update, :presence => true, 
+        :if => Proc.new{|item| 
+          item.vestal_versions_options[:update_comments] == :required && 
+          (!item.new_record? || item.send(:create_initial_version?))
+          }
     end
 
 
@@ -25,7 +35,7 @@ module VestalVersions
       
       def prepare_versioned_options(options)
         result = super(options)
-        vestal_versions_options[:update_comments] = options.delete(:update_comments)
+        self.vestal_versions_options[:update_comments] = options.delete(:update_comments)
         result
       end
     end
@@ -41,11 +51,9 @@ module VestalVersions
         if comments_option.blank? || comments_option == :none
           return super 
         end
-        
         if comments_option == :required && reason_for_update.blank?
           raise CommentForUpdateRequired.new("Need a comment or reason for updating record.")
         end
-         
         super.merge(:reason_for_update => reason_for_update)
       end
 
