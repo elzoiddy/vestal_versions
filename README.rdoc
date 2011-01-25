@@ -21,6 +21,9 @@ In the Gemfile:
 Next, generate and run the first and last versioning migration you'll ever need:
 
   $ rails generate vestal_versions:migration
+  
+Check out the migration and see if you want to turn on the reason for update field
+
   $ rake db:migrate
 
 == Example
@@ -71,6 +74,10 @@ It's that easy! Now watch it in action...
   => "Stephen Richert"
   >> u.version
   => 5
+  >> u.update_attribute(:last_name, "Yobs", :reason_for_update => "some good reason or another")
+  => true
+  >> u.versions.last.reason_for_update
+  => "some good reason or another"
 
 == Upgrading to 1.0
 
