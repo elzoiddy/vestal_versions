@@ -41,7 +41,7 @@ describe VestalVersions::Versions do
     version.should be_initial
   end
   
-  it "sreturn the version number if it is not a revert" do
+  it "return the version number if it is not a revert" do
     user.version.should == user.versions.last.original_number
   end
 
@@ -57,6 +57,18 @@ describe VestalVersions::Versions do
     user.revert_to!(version)
     user.versions.last.original_number.should == 2
   end
+
+  it "revert when number column is renamed" do
+    VestalVersions::Version.config.number_column_name = "elnumero"
+    u = User.create!(:name => "foo bars")
+    u.update_attributes(:name => "snooze bars")
+    u.update_attributes(:name => "candy bars")
+    
+    u.revert_to!(1)
+    u.name.should == "foo bars"
+    u.versions.last.original_number.should == 1
+  end
+
 
   it "should default to 'number' as the version number column" do
     VestalVersions::Version.number_column_name.should == 'number'

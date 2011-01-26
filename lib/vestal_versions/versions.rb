@@ -14,7 +14,7 @@ module VestalVersions
 
       condition = (from_number == to_number) ? to_number : Range.new(*[from_number, to_number].sort)
       all(
-        :conditions => {:number => condition},
+        :conditions => {VestalVersions::Version.number_column_name.to_sym => condition},
         :order => "#{aliased_table_name}.#{connection.quote_column_name(VestalVersions::Version.number_column_name)} #{(from_number > to_number) ? 'DESC' : 'ASC'}"
       )
     end

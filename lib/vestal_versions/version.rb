@@ -43,7 +43,7 @@ module VestalVersions
     end
     
     def number=(value)
-      self[VestalVersions::Version.number_column_name.to_sym] =  value
+      self[VestalVersions::Version.number_column_name.to_sym] = value
     end
 
 
