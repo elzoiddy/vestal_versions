@@ -109,4 +109,19 @@ describe VestalVersions::Comments do
     
   end
 
+  it "should not validate unless record has changed" do
+    User.prepare_versioned_options(:update_comments => :required)
+    user.update_attributes(:first_name => 'Stephenie', :reason_for_update => "nada")
+    user.should be_valid
+    
+    u = User.find_by_id(user.id) 
+    u.should be_valid
+    # if we change something it should be invalid because we don't have a reason for update
+    u.first_name = "Todd"
+    u.should_not be_valid
+    u.reason_for_update = "you look like a Todd to me"
+    u.should be_valid
+    
+  end
+
 end

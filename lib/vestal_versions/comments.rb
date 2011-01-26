@@ -17,6 +17,7 @@ module VestalVersions
 
       validates :reason_for_update, :presence => true, 
         :if => Proc.new{|item| 
+          item.changed? &&
           item.vestal_versions_options[:update_comments] == :required && 
           (!item.new_record? || item.send(:create_initial_version?))
           }
