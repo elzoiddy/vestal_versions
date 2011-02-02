@@ -11,7 +11,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.integer :number
       t.integer :reverted_from
       t.string  :tag
-
+      t.string  :commit_label
       t.timestamps
     end
 
@@ -22,6 +22,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       # see note above about number being a reserved word in oracle
       t.index :number
       t.index :tag
+      t.index :commit_label
       t.index :created_at
     end
   end

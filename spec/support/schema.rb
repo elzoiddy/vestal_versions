@@ -21,6 +21,7 @@ class CreateSchema < ActiveRecord::Migration
       t.integer :elnumero
       t.integer :reverted_from
       t.string :tag
+      t.string :commit_label
       t.timestamps
     end
   end
