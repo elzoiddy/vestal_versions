@@ -27,6 +27,36 @@ describe VestalVersions::Deletion do
 
   end
 
+  context "deletion tracking" do
+    subject{ DeletedUser.create(:first_name => 'Steve', :last_name => 'Richert') }
+    let(:admin_user){ User.create(:name => 'Steve Yobs') }
+
+    it "should track who destroyed a record from a name" do
+      subject.update_attributes(:updated_by => "SYSTEM", :reason_for_update => "no longer needed", :commit_label => "labelA")
+      subject.destroy
+      DeletedUser.find_by_id(subject.id).should be_nil
+      
+      version_record = VestalVersions::Version.last
+      version_record.tag.should == 'deleted'
+      version_record.reason_for_update.should == "no longer needed"
+      version_record.commit_label.should == "labelA"
+      version_record.user_name.should == "SYSTEM"
+    end
+
+    it "should track who destroyed a record given a real user" do
+      subject.update_attributes(:updated_by => admin_user, :reason_for_update => "no longer needed", :commit_label => "labelA")
+      subject.destroy
+      DeletedUser.find_by_id(subject.id).should be_nil
+      
+      version_record = VestalVersions::Version.last
+      version_record.tag.should == 'deleted'
+      version_record.reason_for_update.should == "no longer needed"
+      version_record.commit_label.should == "labelA"
+      version_record.user_id.should == admin_user.id
+      version_record.user_type.should == "User"
+    end
+  end
+
   context "deleted versions" do
     let(:last_version){ VestalVersions::Version.last }
     before do
