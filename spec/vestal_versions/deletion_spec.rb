@@ -95,6 +95,25 @@ describe VestalVersions::Deletion do
         last_version.restore.should == subject
       end
     end
+    
+    context "deleting new records or already destroyed records" do
+      it "does not create record for new records to be deleted" do
+        new_subject = DeletedUser.new(:first_name => 'Steve', :last_name => 'Richert')
+        old_count = VestalVersions::Version.count
+        new_subject.destroy
+        VestalVersions::Version.count.should == old_count # no new versions created
+      end
+      
+      it "does not create versions for records already deleted" do
+        new_subject = DeletedUser.create(:first_name => 'Steve', :last_name => 'Richert')
+        new_subject.destroy
+        new_subject.should be_destroyed
+        old_count = VestalVersions::Version.count
+        new_subject.destroy # couble destroy
+        VestalVersions::Version.count.should == old_count # no new versions created
+      end
+
+    end
 
     context "restoring a record without a save" do
       it "does not save the DeletedUser when restoring" do
