@@ -1,4 +1,5 @@
 HEAD
+* Don't create versions for records not in the database to avoid the "parent not saved" error
 * Added global configuration option to use another for the number column in versions table
   "number" is a reserved word in oracle and cannot be used as a column name or table. 
   Default is still number, since it works fine in most other databases
