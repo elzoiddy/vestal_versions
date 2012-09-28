@@ -90,6 +90,8 @@ Use the vestal_versions Rails generator to generate a new initializer or just si
     config.number_column_name = "version_number"
   end
 
+Make sure you also have this new column name (version_number in this case) in your schema, so vestal_versions should be using this column to store the version number.
+
 == Upgrading to 1.0
 
 For the most part, version 1.0 of <tt>vestal_versions</tt> is backwards compatible, with just a few notable changes:
